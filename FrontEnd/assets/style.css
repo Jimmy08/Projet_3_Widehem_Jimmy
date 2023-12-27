@@ -183,6 +183,61 @@ input[type="submit"]{
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
-	margin: 2em
+	margin: 0 10em;
 }
 
+
+/*** Page Login ***/
+
+body {
+	background-color:#fffef8;
+}
+
+footer {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	background-color: white;
+	height: 60px;
+	width: calc(100% + 300px);
+	margin-left: -150px;
+}
+
+#login {
+	width: 35%;
+	margin: 200px auto;
+}
+#login > * {
+	text-align: center;
+
+}
+#login h2{
+	margin-bottom: 20px;
+}
+#login form {
+	text-align: left;
+	margin-top:30px;
+	display: flex;
+	flex-direction: column;
+}
+
+#login input {
+	height: 50px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+#login label {
+	margin: 2em 0 0.5em 0;
+	font-size: 14px;
+	font-weight: 500;
+}
+#login textarea {
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+#login a {
+	text-decoration: none;
+	color: black;
+}
