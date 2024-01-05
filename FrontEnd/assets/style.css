@@ -84,6 +84,13 @@ h2{
 	font-size: 30px;
 	color: #1D6154
 }
+nav a {
+	text-decoration: none;
+	color: black;
+}
+nav a:hover {
+	color: #B1663C;
+}
 nav ul {
 	display: flex;
 	align-items: center;
@@ -224,6 +231,7 @@ footer {
 	height: 60px;
 	width: calc(100% + 300px);
 	margin-left: -150px;
+	margin-top: 50px;
 }
 
 #login {
