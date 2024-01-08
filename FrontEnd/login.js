@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
   
-        fetch('http://localhost:5678/users/login', {
+        fetch('http://localhost:5678/api/users/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }),
         })
           .then((response) => {
+            console.log(response);
             if (response.status === 200) {
               return response.json();
             } else if (response.status === 401) {
