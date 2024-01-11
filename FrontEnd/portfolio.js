@@ -34,6 +34,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const categorySet = new Set();
 
+  const authToken = localStorage.getItem('authToken');
+  const isAdminConnected = authToken !== null;
+
+  if (isAdminConnected) {
+    document.getElementById('editmodebar').style.display = 'flex';
+    document.getElementById('modal').style.display = 'block';
+    document.getElementById('filters').style.display = 'none';
+    document.body.style.paddingTop = '59px';
+  } else {
+    document.getElementById('filters').style.display = 'flex';
+  }
+
   fetchAndDisplayProjects(categorySet);
 
   document.getElementById('all').addEventListener('click', () => {
