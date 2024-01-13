@@ -70,4 +70,49 @@ document.addEventListener('DOMContentLoaded', () => {
     categorySet.add(3);
     fetchAndDisplayProjects(categorySet);
   });
+
+  const modalContainer = document.getElementById('modal-container');
+  const closeModalBtn = document.getElementById('close-modal');
+  const addPhotoBtn = document.getElementById('add-photo-btn');
+  const galleryContainer = document.getElementById('gallery-container');
+
+  const openModal = () => {
+    modalContainer.style.display = 'block';
+    fetchProjects();
+  };
+
+  const closeModal = () => {
+    modalContainer.style.display = 'none';
+  };
+
+  const fetchProjects = () => {
+    const apiUrl = 'http://localhost:5678/api/works';
+
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(projects => {
+        galleryContainer.innerHTML = '';
+
+        projects.forEach(project => {
+          const projectImage = document.createElement('img');
+          projectImage.src = project.imageUrl;
+          projectImage.alt = project.title;
+          galleryContainer.appendChild(projectImage);
+        });
+      })
+      .catch(error => console.error('Erreur lors de la récupération des projets pour la galerie :', error));
+  };
+
+  document.getElementById('modaltext').addEventListener('click', openModal);
+  closeModalBtn.addEventListener('click', closeModal);
+  window.addEventListener('click', (event) => {
+    if (event.target === modalContainer) {
+      closeModal();
+    }
+  });
+
+  addPhotoBtn.addEventListener('click', () => {
+    // Ajoutez ici le code pour gérer l'ajout d'une photo
+    // Vous pouvez appeler une fonction ou ouvrir une autre fenêtre modale, par exemple
+  });
 });
