@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
           if (project.imageUrl) {
             if (categorySet.size === 0 || categorySet.has(project.categoryId)) {
               const figure = document.createElement('figure');
+              const imgContainer = document.createElement('div');
+              imgContainer.classList.add('image-container');
               const img = document.createElement('img');
               const figcaption = document.createElement('figcaption');
 
@@ -19,7 +21,16 @@ document.addEventListener('DOMContentLoaded', () => {
               img.alt = project.title;
               figcaption.textContent = project.title;
 
-              figure.appendChild(img);
+              imgContainer.appendChild(img);
+
+              const deleteIcon = document.createElement('i');
+              deleteIcon.classList.add('fa-solid', 'fa-trash');
+              deleteIcon.addEventListener('click', () => {
+                deleteProject(project.id);
+              });
+              imgContainer.appendChild(deleteIcon);
+
+              figure.appendChild(imgContainer);
               figure.appendChild(figcaption);
 
               gallery.appendChild(figure);
@@ -30,6 +41,34 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       })
       .catch(error => console.error('Erreur lors de la récupération des projets :', error));
+  };
+
+  const deleteProject = (projectId) => {
+    const apiUrl = `http://localhost:5678/api/works/${projectId}`;
+
+    fetch(apiUrl, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+        'Content-Type': 'application/json',
+      },
+    })
+    
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('La suppression a échoué');
+      }
+      return response.json();
+    })
+    .then(data => {
+      const deletedProjectElement = document.getElementById(`project-${projectId}`);
+      if (deletedProjectElement) {
+        deletedProjectElement.remove();
+      }
+    })
+    .catch(error => {
+      console.error('Erreur lors de la suppression :', error);
+    });
   };
 
   const categorySet = new Set();
@@ -94,10 +133,22 @@ document.addEventListener('DOMContentLoaded', () => {
         galleryContainer.innerHTML = '';
 
         projects.forEach(project => {
+          const projectContainer = document.createElement('div');
+          projectContainer.classList.add('image-container');
+
           const projectImage = document.createElement('img');
           projectImage.src = project.imageUrl;
           projectImage.alt = project.title;
-          galleryContainer.appendChild(projectImage);
+
+          const deleteIcon = document.createElement('i');
+          deleteIcon.classList.add('fa-solid', 'fa-trash');
+          deleteIcon.addEventListener('click', () => {
+            deleteProject(project.id);
+          });
+
+          projectContainer.appendChild(projectImage);
+          projectContainer.appendChild(deleteIcon);
+          galleryContainer.appendChild(projectContainer);
         });
       })
       .catch(error => console.error('Erreur lors de la récupération des projets pour la galerie :', error));
