@@ -71,6 +71,65 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  const addProjectFormContainer = document.getElementById('add-project-form-container');
+  const addProjectForm = document.getElementById('add-project-form');
+  const addPhotoBtn = document.getElementById('add-photo-btn');
+
+  const openAddProjectForm = () => {
+    // Supprime tous les éléments enfants du contenu de la modale
+    const modalContent = document.getElementById('modal-content');
+    while (modalContent.firstChild) {
+      modalContent.removeChild(modalContent.firstChild);
+    }
+
+    // Ajoute le formulaire d'ajout de projet à la modale
+    const addProjectFormClone = addProjectFormContainer.cloneNode(true);
+    addProjectFormClone.style.display = 'block';
+    modalContent.appendChild(addProjectFormClone);
+
+    modalContainer.style.display = 'block';
+  };
+
+  const closeAddProjectForm = () => {
+    addProjectFormContainer.style.display = 'none';
+  };
+
+  addPhotoBtn.addEventListener('click', openAddProjectForm);
+
+  addProjectForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const title = document.getElementById('project-title').value;
+    const category = document.getElementById('project-category').value;
+    const image = document.getElementById('project-image').files[0];
+
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('category', category);
+    formData.append('image', image);
+
+    fetch('http://localhost:5678/api/works', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+      },
+      body: formData,
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('L\'ajout du projet a échoué');
+      }
+      return response.json();
+    })
+    .then(data => {
+      closeAddProjectForm();
+      fetchAndDisplayProjects();
+    })
+    .catch(error => {
+      console.error('Erreur lors de l\'ajout du projet :', error);
+    });
+  });
+
   const categorySet = new Set();
 
   const authToken = localStorage.getItem('authToken');
@@ -112,7 +171,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const modalContainer = document.getElementById('modal-container');
   const closeModalBtn = document.getElementById('close-modal');
-  const addPhotoBtn = document.getElementById('add-photo-btn');
   const galleryContainer = document.getElementById('gallery-container');
 
   const openModal = () => {
@@ -160,10 +218,5 @@ document.addEventListener('DOMContentLoaded', () => {
     if (event.target === modalContainer) {
       closeModal();
     }
-  });
-
-  addPhotoBtn.addEventListener('click', () => {
-    // Ajoutez ici le code pour gérer l'ajout d'une photo
-    // Vous pouvez appeler une fonction ou ouvrir une autre fenêtre modale, par exemple
   });
 });

@@ -411,3 +411,15 @@ footer {
 	top: 3px;
 	left: 4px;
   }
+
+  #back-to-gallery {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	font-size: 20px;
+	cursor: pointer;
+  }
+  
+  #back-to-gallery:hover {
+	color: #B1663C;
+  }

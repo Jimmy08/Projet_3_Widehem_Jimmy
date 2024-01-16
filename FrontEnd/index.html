@@ -79,12 +79,33 @@
 </footer>
 <div id="modal-container">
 	<div id="modal-content">
-	  <span id="close-modal">&times;</span>
-	  <h2>Galerie photo</h2>
-	  <div id="gallery-container" class="gallery"></div>
-	  <button id="add-photo-btn">Ajouter une photo</button>
+		<span id="close-modal">&times;</span>
+		<h2>Galerie photo</h2>
+		<div id="gallery-container" class="gallery"></div>
+		<!-- Bouton pour ouvrir le formulaire d'ajout -->
+		<button id="add-photo-btn">Ajouter une photo</button>
+		<!-- Formulaire d'ajout de projet -->
+		<div id="add-project-form-container" style="display: none;">
+			<span id="close-modal">&times;</span>
+			<span id="back-to-gallery" class="back-icon">&larr;</span>
+			<h2>Ajouter un projet</h2>
+			<form id="add-project-form" enctype="multipart/form-data">
+				<label for="image">Image</label>
+				<input type="file" name="image" id="image" accept="image/*" required>
+				<label for="title">Titre</label>
+				<input type="text" name="title" id="title" required>
+				<label for="category">Catégorie</label>
+				<select name="category" id="category" required>
+					<option value="1">Objets</option>
+					<option value="2">Appartements</option>
+					<option value="3">Hôtels & restaurants</option>
+				</select>
+				<input type="submit" value="Ajouter">
+			</form>
+		</div>
 	</div>
-</div>  
+</div>
+
 <script src="/FrontEnd/portfolio.js"></script>
 </body>
 </html>
