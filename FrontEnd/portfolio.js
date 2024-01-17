@@ -53,22 +53,21 @@ document.addEventListener('DOMContentLoaded', () => {
         'Content-Type': 'application/json',
       },
     })
-    
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('La suppression a échoué');
-      }
-      return response.json();
-    })
-    .then(data => {
-      const deletedProjectElement = document.getElementById(`project-${projectId}`);
-      if (deletedProjectElement) {
-        deletedProjectElement.remove();
-      }
-    })
-    .catch(error => {
-      console.error('Erreur lors de la suppression :', error);
-    });
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('La suppression a échoué');
+        }
+        return response.json();
+      })
+      .then(data => {
+        const deletedProjectElement = document.getElementById(`project-${projectId}`);
+        if (deletedProjectElement) {
+          deletedProjectElement.remove();
+        }
+      })
+      .catch(error => {
+        console.error('Erreur lors de la suppression :', error);
+      });
   };
 
   const addProjectFormContainer = document.getElementById('add-project-form-container');
@@ -76,13 +75,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const addPhotoBtn = document.getElementById('add-photo-btn');
 
   const openAddProjectForm = () => {
-    // Supprime tous les éléments enfants du contenu de la modale
     const modalContent = document.getElementById('modal-content');
     while (modalContent.firstChild) {
       modalContent.removeChild(modalContent.firstChild);
     }
 
-    // Ajoute le formulaire d'ajout de projet à la modale
     const addProjectFormClone = addProjectFormContainer.cloneNode(true);
     addProjectFormClone.style.display = 'block';
     modalContent.appendChild(addProjectFormClone);
@@ -99,14 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
   addProjectForm.addEventListener('submit', (event) => {
     event.preventDefault();
 
-    const title = document.getElementById('project-title').value;
-    const category = document.getElementById('project-category').value;
-    const image = document.getElementById('project-image').files[0];
-
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('category', category);
-    formData.append('image', image);
+    const formData = new FormData(addProjectForm);
 
     fetch('http://localhost:5678/api/works', {
       method: 'POST',
@@ -115,23 +105,22 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       body: formData,
     })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('L\'ajout du projet a échoué');
-      }
-      return response.json();
-    })
-    .then(data => {
-      closeAddProjectForm();
-      fetchAndDisplayProjects();
-    })
-    .catch(error => {
-      console.error('Erreur lors de l\'ajout du projet :', error);
-    });
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('L\'ajout du projet a échoué');
+        }
+        return response.json();
+      })
+      .then(data => {
+        closeAddProjectForm();
+        fetchAndDisplayProjects();
+      })
+      .catch(error => {
+        console.error('Erreur lors de l\'ajout du projet :', error);
+      });
   });
 
   const categorySet = new Set();
-
   const authToken = localStorage.getItem('authToken');
   const isAdminConnected = authToken !== null;
 
