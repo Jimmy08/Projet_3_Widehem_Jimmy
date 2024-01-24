@@ -23,13 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
               imgContainer.appendChild(img);
 
-              const deleteIcon = document.createElement('i');
-              deleteIcon.classList.add('fa-solid', 'fa-trash');
-              deleteIcon.addEventListener('click', () => {
-                deleteProject(project.id);
-              });
-              imgContainer.appendChild(deleteIcon);
-
               figure.appendChild(imgContainer);
               figure.appendChild(figcaption);
 
@@ -79,46 +72,50 @@ document.addEventListener('DOMContentLoaded', () => {
     while (modalContent.firstChild) {
       modalContent.removeChild(modalContent.firstChild);
     }
-
-    const addProjectFormClone = addProjectFormContainer.cloneNode(true);
-    addProjectFormClone.style.display = 'block';
-    modalContent.appendChild(addProjectFormClone);
-
+  
+    const addProjectFormCloneContainer = addProjectFormContainer.cloneNode(true);
+    addProjectFormCloneContainer.style.display = 'block';
+    modalContent.appendChild(addProjectFormCloneContainer);
+  
     modalContainer.style.display = 'block';
+  
+    const clonedForm = addProjectFormCloneContainer.querySelector('#add-project-form');
+    if (clonedForm) {
+      clonedForm.addEventListener('submit', (event) => {
+        console.log("Cloned form submit event triggered");
+        event.preventDefault();
+  
+        const formData = new FormData(clonedForm);
+  
+        fetch('http://localhost:5678/api/works', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+          },
+          body: formData,
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('L\'ajout du projet a échoué');
+          }
+          return response.json();
+        })
+        .then(data => {
+          closeAddProjectForm();
+          fetchAndDisplayProjects();
+        })
+        .catch(error => {
+          console.error('Erreur lors de l\'ajout du projet :', error);
+        });
+      });
+    }
   };
 
   const closeAddProjectForm = () => {
-    addProjectFormContainer.style.display = 'none';
+    modalContainer.style.display = 'none';
   };
-
+  
   addPhotoBtn.addEventListener('click', openAddProjectForm);
-
-  addProjectForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-
-    const formData = new FormData(addProjectForm);
-
-    fetch('http://localhost:5678/api/works', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-      },
-      body: formData,
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('L\'ajout du projet a échoué');
-        }
-        return response.json();
-      })
-      .then(data => {
-        closeAddProjectForm();
-        fetchAndDisplayProjects();
-      })
-      .catch(error => {
-        console.error('Erreur lors de l\'ajout du projet :', error);
-      });
-  });
 
   const categorySet = new Set();
   const authToken = localStorage.getItem('authToken');
