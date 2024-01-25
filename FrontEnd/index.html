@@ -87,8 +87,11 @@
 		<div id="add-project-form-container" style="display: none;">
 			<span id="close-modal">&times;</span>
 			<span id="back-to-gallery" class="back-icon">&larr;</span>
-			<h2>Ajouter un projet</h2>
+			<h2>Ajout photo</h2>
 			<form id="add-project-form" enctype="multipart/form-data">
+				<div id="image-preview-container">
+					<img id="image-preview" src="" alt="Image Preview">
+				</div>
 				<label for="image">Image</label>
 				<input type="file" name="image" id="image" accept="image/*" required>
 				<label for="title">Titre</label>
@@ -99,7 +102,7 @@
 					<option value="2">Appartements</option>
 					<option value="3">Hôtels & restaurants</option>
 				</select>
-				<input type="submit" value="Ajouter">
+				<input type="submit" value="Valider">
 			</form>
 		</div>
 	</div>

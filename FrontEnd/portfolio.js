@@ -67,26 +67,31 @@ document.addEventListener('DOMContentLoaded', () => {
   const addProjectForm = document.getElementById('add-project-form');
   const addPhotoBtn = document.getElementById('add-photo-btn');
 
+  // Ajout des éléments pour la prévisualisation d'image
+  const imageInput = document.getElementById('image');
+  const imagePreviewContainer = document.getElementById('image-preview-container');
+  const imagePreview = document.getElementById('image-preview');
+
   const openAddProjectForm = () => {
     const modalContent = document.getElementById('modal-content');
     while (modalContent.firstChild) {
       modalContent.removeChild(modalContent.firstChild);
     }
-  
+
     const addProjectFormCloneContainer = addProjectFormContainer.cloneNode(true);
     addProjectFormCloneContainer.style.display = 'block';
     modalContent.appendChild(addProjectFormCloneContainer);
-  
+
     modalContainer.style.display = 'block';
-  
+
     const clonedForm = addProjectFormCloneContainer.querySelector('#add-project-form');
     if (clonedForm) {
       clonedForm.addEventListener('submit', (event) => {
         console.log("Cloned form submit event triggered");
         event.preventDefault();
-  
+
         const formData = new FormData(clonedForm);
-  
+
         fetch('http://localhost:5678/api/works', {
           method: 'POST',
           headers: {
@@ -109,12 +114,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       });
     }
+
+    // Logique pour la prévisualisation d'image
+    imageInput.addEventListener('change', () => {
+      const file = imageInput.files[0];
+
+      if (file) {
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+          imagePreview.src = e.target.result;
+          imagePreviewContainer.style.display = 'block';
+        };
+
+        reader.readAsDataURL(file);
+      } else {
+        imagePreview.src = '';
+        imagePreviewContainer.style.display = 'none';
+      }
+    });
   };
 
   const closeAddProjectForm = () => {
     modalContainer.style.display = 'none';
   };
-  
+
   addPhotoBtn.addEventListener('click', openAddProjectForm);
 
   const categorySet = new Set();

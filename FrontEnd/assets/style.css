@@ -423,3 +423,14 @@ footer {
   #back-to-gallery:hover {
 	color: #B1663C;
   }
+
+  #add-project-form {
+	display: flex;
+	flex-direction: column;
+  }
+
+  #add-project-form input[type="submit"] {
+	position: absolute;
+	bottom: 0;
+	left: 30%;
+  }
