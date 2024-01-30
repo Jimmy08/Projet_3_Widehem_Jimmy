@@ -1,4 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const loadFile = (event) => {
+    const output = document.getElementById('image-preview');
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.onload = function() {
+      URL.revokeObjectURL(output.src); // libérer la mémoire
+    };
+  };
+
   const fetchAndDisplayProjects = (categorySet) => {
     const apiUrl = 'http://localhost:5678/api/works';
 
@@ -67,11 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const addProjectForm = document.getElementById('add-project-form');
   const addPhotoBtn = document.getElementById('add-photo-btn');
 
-  // Ajout des éléments pour la prévisualisation d'image
-  const imageInput = document.getElementById('image');
-  const imagePreviewContainer = document.getElementById('image-preview-container');
-  const imagePreview = document.getElementById('image-preview');
-
   const openAddProjectForm = () => {
     const modalContent = document.getElementById('modal-content');
     while (modalContent.firstChild) {
@@ -115,24 +118,12 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Logique pour la prévisualisation d'image
-    imageInput.addEventListener('change', () => {
-      const file = imageInput.files[0];
-
-      if (file) {
-        const reader = new FileReader();
-
-        reader.onload = (e) => {
-          imagePreview.src = e.target.result;
-          imagePreviewContainer.style.display = 'block';
-        };
-
-        reader.readAsDataURL(file);
-      } else {
-        imagePreview.src = '';
-        imagePreviewContainer.style.display = 'none';
-      }
-    });
+    const imageInput = addProjectFormCloneContainer.querySelector('#image');
+    if (imageInput) {
+      imageInput.onchange = (event) => {
+        loadFile(event);
+      };
+    }
   };
 
   const closeAddProjectForm = () => {
