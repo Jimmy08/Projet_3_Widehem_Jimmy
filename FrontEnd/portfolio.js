@@ -1,9 +1,19 @@
+const showGalleryPage = () => {
+  const galleryContainer = document.getElementById('gallery-container');
+  const addProjectFormContainer = document.getElementById('add-project-form-container');
+
+  if (galleryContainer && addProjectFormContainer) {
+    galleryContainer.style.display = 'block';
+    addProjectFormContainer.style.display = 'none';
+  }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   const loadFile = (event) => {
     const output = document.getElementById('image-preview');
     output.src = URL.createObjectURL(event.target.files[0]);
-    output.onload = function() {
-      URL.revokeObjectURL(output.src); // libérer la mémoire
+    output.onload = function () {
+      URL.revokeObjectURL(output.src);
     };
   };
 
@@ -30,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
               figcaption.textContent = project.title;
 
               imgContainer.appendChild(img);
-
               figure.appendChild(imgContainer);
               figure.appendChild(figcaption);
 
@@ -102,19 +111,19 @@ document.addEventListener('DOMContentLoaded', () => {
           },
           body: formData,
         })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('L\'ajout du projet a échoué');
-          }
-          return response.json();
-        })
-        .then(data => {
-          closeAddProjectForm();
-          fetchAndDisplayProjects();
-        })
-        .catch(error => {
-          console.error('Erreur lors de l\'ajout du projet :', error);
-        });
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('L\'ajout du projet a échoué');
+            }
+            return response.json();
+          })
+          .then(data => {
+            closeAddProjectForm();
+            fetchAndDisplayProjects();
+          })
+          .catch(error => {
+            console.error('Erreur lors de l\'ajout du projet :', error);
+          });
       });
     }
 
@@ -124,6 +133,15 @@ document.addEventListener('DOMContentLoaded', () => {
         loadFile(event);
       };
     }
+
+    const closeModalBtn = addProjectFormCloneContainer.querySelector('#close-modal');
+    const backToGalleryBtn = addProjectFormCloneContainer.querySelector('#back-to-gallery');
+
+    closeModalBtn.addEventListener('click', () => {
+      closeAddProjectForm();
+    });
+
+    backToGalleryBtn.addEventListener('click', openModal);
   };
 
   const closeAddProjectForm = () => {
