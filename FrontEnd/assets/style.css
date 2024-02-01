@@ -461,7 +461,11 @@ footer {
   }
 
   #add-project-form-container {
-	width: 100%;
+	width: 420px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
   }
 
   #add-project-form input#title {
@@ -478,4 +482,11 @@ footer {
 	font-size: 14px;
 	font-weight: 500;
 	color: #3D3D3D;
+  }
+
+  .fa-image:before {
+	color: #B9C5CC;
+	position: absolute;
+	left: 374px;
+	top: 140px;
   }
