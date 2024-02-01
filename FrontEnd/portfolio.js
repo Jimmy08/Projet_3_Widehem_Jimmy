@@ -80,6 +80,30 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   };
 
+  // Fonction pour ajouter un projet
+  const addProject = (formData) => {
+    fetch('http://localhost:5678/api/works', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+      },
+      body: formData,
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('L\'ajout du projet a échoué');
+        }
+        return response.json();
+      })
+      .then(data => {
+        closeAddProjectForm();
+        fetchAndDisplayProjects();
+      })
+      .catch(error => {
+        console.error('Erreur lors de l\'ajout du projet :', error);
+      });
+  };
+
   const addProjectFormContainer = document.getElementById('add-project-form-container');
   const addProjectForm = document.getElementById('add-project-form');
   const addPhotoBtn = document.getElementById('add-photo-btn');
@@ -103,27 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
 
         const formData = new FormData(clonedForm);
-
-        fetch('http://localhost:5678/api/works', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-          },
-          body: formData,
-        })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('L\'ajout du projet a échoué');
-            }
-            return response.json();
-          })
-          .then(data => {
-            closeAddProjectForm();
-            fetchAndDisplayProjects();
-          })
-          .catch(error => {
-            console.error('Erreur lors de l\'ajout du projet :', error);
-          });
+        addProject(formData);
       });
     }
 
@@ -141,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
       closeAddProjectForm();
     });
 
-    backToGalleryBtn.addEventListener('click', openModal);
+    backToGalleryBtn.addEventListener('click', showGalleryPage);
   };
 
   const closeAddProjectForm = () => {
