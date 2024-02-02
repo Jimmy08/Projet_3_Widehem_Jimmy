@@ -104,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .then(data => {
         closeAddProjectForm();
+        console.log('bonjour');
         fetchAndDisplayProjects();
       })
       .catch(error => {
@@ -167,17 +168,20 @@ document.addEventListener('DOMContentLoaded', () => {
 const backToGallery = () => {
   console.log("Back to gallery button clicked");
   const galleryContainer = document.getElementById('gallery-container');
+console.log(galleryContainer)
   const addProjectFormContainer = document.getElementById('add-project-form-container');
 
-  if (galleryContainer && addProjectFormContainer) {
+  // if (galleryContainer && addProjectFormContainer) {
     galleryContainer.style.display = 'block';
     addProjectFormContainer.style.display = 'none';
-  }
+  // }
 };
 
   // Fonction pour fermer le formulaire d'ajout de projet
   const closeAddProjectForm = () => {
+    console.log('bonjour');
     modalContainer.style.display = 'none';
+    console.log('hello');
     addProjectForm.reset();
   };
 
