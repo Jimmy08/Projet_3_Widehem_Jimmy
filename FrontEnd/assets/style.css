@@ -431,6 +431,13 @@ footer {
 	bottom: 0;
 	height: 36px;
 	width: 237px;
+	background-color: #B9C5CC;
+	border: none;
+	cursor: pointer;
+  }
+
+  #add-project-form input[type="submit"]:hover {
+	background-color: #1D6154;
   }
 
   #add-project-form {
@@ -451,6 +458,8 @@ footer {
 	background-color: #E8F1F6;
 	display: flex;
 	justify-content: center;
+	flex-direction: column;
+	align-items: center;
   }
   
   #image-preview {
@@ -489,4 +498,18 @@ footer {
 	position: absolute;
 	left: 374px;
 	top: 140px;
+  }
+
+  .custom-file-upload {
+	cursor: pointer;
+	background-color: #B9C5CC;
+	color: white;
+	padding: 8px 16px;
+	margin-top: 90px;
+	text-align: center;
+	display: inline-block;
+	border-radius: 15px;
+	font-size: 14px;
+	border: 1px solid #B9C5CC;
+	width: fit-content;
   }

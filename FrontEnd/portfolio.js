@@ -14,11 +14,22 @@ const showGalleryPage = () => {
 document.addEventListener('DOMContentLoaded', () => {
   // Fonction pour charger un fichier
   const loadFile = (event) => {
-    const output = document.getElementById('image-preview');
-    output.src = URL.createObjectURL(event.target.files[0]);
-    output.onload = function () {
-      URL.revokeObjectURL(output.src);
-    };
+    const imagePreview = document.getElementById('image-preview');
+    const imageIcon = document.getElementById('picture-icon');
+    const fileUploadButton = document.querySelector('.custom-file-upload');
+  
+    if (event.target.files && event.target.files[0]) {
+      let reader = new FileReader();
+  
+      reader.onload = function(e) {
+        imagePreview.src = e.target.result;
+        imagePreview.style.display = 'block';
+        imageIcon.style.display = 'none';
+        fileUploadButton.style.display = 'none';
+      };
+  
+      reader.readAsDataURL(event.target.files[0]);
+    }
   };
 
   // Fonction pour récupérer et afficher les projets depuis l'API
@@ -166,16 +177,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Fonction pour revenir à la galerie
 const backToGallery = () => {
-  console.log("Back to gallery button clicked");
   const galleryContainer = document.getElementById('gallery-container');
-console.log(galleryContainer)
   const addProjectFormContainer = document.getElementById('add-project-form-container');
 
-  // if (galleryContainer && addProjectFormContainer) {
-    galleryContainer.style.display = 'block';
-    addProjectFormContainer.style.display = 'none';
-  // }
+  if (!galleryContainer || !addProjectFormContainer) {
+    console.error('One or more elements not found');
+    return;
+  }
+
+  galleryContainer.style.display = 'block';
+  addProjectFormContainer.style.display = 'none';
 };
+
 
   // Fonction pour fermer le formulaire d'ajout de projet
   const closeAddProjectForm = () => {

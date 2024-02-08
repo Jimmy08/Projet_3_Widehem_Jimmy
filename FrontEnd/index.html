@@ -81,9 +81,7 @@
 			<span id="close-modal">&times;</span>
 			<h2>Galerie photo</h2>
 			<div id="gallery-container" class="gallery"></div>
-			<!-- Bouton pour ouvrir le formulaire d'ajout -->
 			<button id="add-photo-btn">Ajouter une photo</button>
-			<!-- Formulaire d'ajout de projet -->
 			<div id="add-project-form-container" style="display: none;">
 				<span id="close-modal">&times;</span>
 				<span id="back-to-gallery" class="back-icon">&larr;</span>
@@ -91,21 +89,23 @@
 				<form id="add-project-form" enctype="multipart/form-data">
 					<div id="image-preview-container">
 						<i class="fa-regular fa-image fa-6x" id="picture-icon"></i>
-					  <img id="image-preview" src="" alt="Image Preview">
+						<label for="image" class="custom-file-upload">
+						  <i class="fa fa-plus"></i> Ajouter photo
+						</label>
+						<input type="file" id="image" name="image" accept="image/*" onchange="loadFile(event)" style="display: none;">
+						<img id="image-preview" src="" alt="Image Preview" style="display: none;">
 					</div>
-					<label for="image">Choisir un fichier</label>
-					<input type="file" id="image" name="image" accept="image/*" onchange="loadFile(event)">
-					<label for="title">Titre</label>
-					<input type="text" name="title" id="title" required>
-					<label for="category">Catégorie</label>
-					<select name="category" id="category" required>
-					  <option value="1">Objets</option>
-					  <option value="2">Appartements</option>
-					  <option value="3">Hôtels & restaurants</option>
-					</select>
-					<input type="submit" value="Valider">
-				  </form>
-			</div>
+				  <label for="title">Titre</label>
+				  <input type="text" name="title" id="title" required>
+				  <label for="category">Catégorie</label>
+				  <select name="category" id="category" required>
+					<option value="1">Objets</option>
+					<option value="2">Appartements</option>
+					<option value="3">Hôtels & restaurants</option>
+				  </select>
+				  <input type="submit" value="Valider">
+				</form>
+			  </div>
 		</div>
 	</div>
 	<script src="/FrontEnd/portfolio.js"></script>
