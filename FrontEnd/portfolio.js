@@ -1,12 +1,33 @@
 // Fonction pour afficher la page de la galerie
 const showGalleryPage = () => {
-  console.log('Showing gallery page');
   const galleryContainer = document.getElementById('gallery-container');
   const addProjectFormContainer = document.getElementById('add-project-form-container');
 
   if (galleryContainer && addProjectFormContainer) {
     galleryContainer.style.display = 'block';
     addProjectFormContainer.style.display = 'none';
+  }
+};
+
+
+
+// Fonction pour charger un fichier et afficher la prévisualisation
+const loadFile = (event) => {
+  const imagePreview = document.getElementById('image-preview');
+  const imageIcon = document.getElementById('picture-icon');
+  const fileUploadButton = document.querySelector('.custom-file-upload');
+
+  if (event.target.files && event.target.files[0]) {
+    let reader = new FileReader();
+
+    reader.onload = function(e) {
+      imagePreview.src = e.target.result;
+      imagePreview.style.display = 'block';
+      imageIcon.style.display = 'none';
+      fileUploadButton.style.display = 'none';
+    };
+
+    reader.readAsDataURL(event.target.files[0]);
   }
 };
 
@@ -125,6 +146,9 @@ const openAddProjectForm = () => {
 
   modalContainer.style.display = 'block';
 
+  // Réattachez les écouteurs d'événements pour la prévisualisation d'image
+  attachImageUploadListener();
+
   // Réattachez les écouteurs d'événements aux boutons dans la modale d'ajout de projet
   const closeModalBtnInForm = document.getElementById('add-project-form-container').querySelector('#close-modal');
   const backToGalleryBtnInForm = document.getElementById('add-project-form-container').querySelector('#back-to-gallery');
@@ -136,6 +160,15 @@ const openAddProjectForm = () => {
   if (backToGalleryBtnInForm) {
     backToGalleryBtnInForm.removeEventListener('click', backToGallery);
     backToGalleryBtnInForm.addEventListener('click', backToGallery);
+  }
+};
+
+// Réattacher l'écouteur d'événements pour la prévisualisation d'image
+const attachImageUploadListener = () => {
+  const imageInput = document.getElementById('image');
+  if (imageInput) {
+    imageInput.removeEventListener('change', loadFile); // Supprimer l'ancien écouteur s'il existe
+    imageInput.addEventListener('change', loadFile); // Ajouter le nouvel écouteur
   }
 };
 
@@ -176,11 +209,38 @@ document.addEventListener('DOMContentLoaded', () => {
     closeModalBtn.addEventListener('click', closeAddProjectForm);
   }
 
+    // Logique pour attacher l'écouteur d'événement au formulaire d'ajout de projet
+    const addProjectForm = document.getElementById('add-project-form'); // Assurez-vous que c'est le bon ID.
+    if (addProjectForm) {
+      addProjectForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(this);
+        addProject(formData);
+      });
+    } else {
+      console.error('Formulaire d\'ajout de projet introuvable!');
+    }
+
   // Si vous avez un bouton spécifique pour revenir à la galerie dans votre formulaire d'ajout, assurez-vous qu'il est correctement géré ici
   const backToGalleryBtn = document.getElementById('back-to-gallery');
   if (backToGalleryBtn) {
     backToGalleryBtn.addEventListener('click', backToGallery);
   }
+
+    // Réattachez l'écouteur d'événements pour la prévisualisation d'image
+    attachImageUploadListener();
+
+    // Écouteur d'événements pour ouvrir le sélecteur de fichier quand on clique sur la prévisualisation
+    const imagePreview = document.getElementById('image-preview');
+    const imageInput = document.getElementById('image');
+    
+    if (imagePreview) {
+      imagePreview.addEventListener('click', () => {
+        if (imageInput) {
+          imageInput.click(); // Déclenche le clic sur l'input de type file
+        }
+      });
+    }
 });
 
   // Initialisation d'un ensemble pour les catégories et vérification de l'authentification admin
