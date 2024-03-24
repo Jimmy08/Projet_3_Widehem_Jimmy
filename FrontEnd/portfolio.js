@@ -10,28 +10,6 @@ const showGalleryPage = () => {
   }
 };
 
-// Écouteur d'événement lorsque le DOM est chargé
-document.addEventListener('DOMContentLoaded', () => {
-  // Fonction pour charger un fichier
-  const loadFile = (event) => {
-    const imagePreview = document.getElementById('image-preview');
-    const imageIcon = document.getElementById('picture-icon');
-    const fileUploadButton = document.querySelector('.custom-file-upload');
-  
-    if (event.target.files && event.target.files[0]) {
-      let reader = new FileReader();
-  
-      reader.onload = function(e) {
-        imagePreview.src = e.target.result;
-        imagePreview.style.display = 'block';
-        imageIcon.style.display = 'none';
-        fileUploadButton.style.display = 'none';
-      };
-  
-      reader.readAsDataURL(event.target.files[0]);
-    }
-  };
-
   // Fonction pour récupérer et afficher les projets depuis l'API
   const fetchAndDisplayProjects = (categorySet) => {
     const apiUrl = 'http://localhost:5678/api/works';
@@ -123,83 +101,87 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   };
 
-  // Éléments HTML récupérés une seule fois pour améliorer les performances
-  const addProjectFormContainer = document.getElementById('add-project-form-container');
-  const addProjectForm = document.getElementById('add-project-form');
-  const addPhotoBtn = document.getElementById('add-photo-btn');
+// Éléments HTML récupérés une seule fois pour améliorer les performances
+const addProjectFormContainer = document.getElementById('add-project-form-container');
+const addPhotoBtn = document.getElementById('add-photo-btn');
 
-  // Fonction pour ouvrir le formulaire d'ajout de projet
-  const openAddProjectForm = () => {
-    const modalContent = document.getElementById('modal-content');
-    while (modalContent.firstChild) {
-      modalContent.removeChild(modalContent.firstChild);
-    }
+// Fonction pour ouvrir le formulaire d'ajout de projet
+const openAddProjectForm = () => {
+  const galleryContainer = document.getElementById('gallery-container');
+  const galleryTitle = document.querySelector('#modal-content > h2');
 
-    const addProjectFormCloneContainer = addProjectFormContainer.cloneNode(true);
-    addProjectFormCloneContainer.style.display = 'block';
-    modalContent.appendChild(addProjectFormCloneContainer);
+  if (galleryContainer) {
+    galleryContainer.style.display = 'none';
+  }
+  if (galleryTitle) {
+    galleryTitle.style.display = 'none';
+  }
+  if (addPhotoBtn) {
+    addPhotoBtn.style.display = 'none';
+  }
+  if (addProjectFormContainer) {
+    addProjectFormContainer.style.display = 'block';
+  }
 
-    modalContainer.style.display = 'block';
+  modalContainer.style.display = 'block';
 
-    const clonedForm = addProjectFormCloneContainer.querySelector('#add-project-form');
-    if (clonedForm) {
-      clonedForm.addEventListener('submit', (event) => {
-        console.log("Cloned form submit event triggered");
-        event.preventDefault();
+  // Réattachez les écouteurs d'événements aux boutons dans la modale d'ajout de projet
+  const closeModalBtnInForm = document.getElementById('add-project-form-container').querySelector('#close-modal');
+  const backToGalleryBtnInForm = document.getElementById('add-project-form-container').querySelector('#back-to-gallery');
 
-        const formData = new FormData(clonedForm);
-        addProject(formData);
-      });
-    }
-
-    const imageInput = addProjectFormCloneContainer.querySelector('#image');
-    if (imageInput) {
-      imageInput.onchange = (event) => {
-        loadFile(event);
-      };
-    }
-
-    const closeModalBtn = addProjectFormCloneContainer.querySelector('#close-modal');
-    const backToGalleryBtn = addProjectFormCloneContainer.querySelector('#back-to-gallery');
-
-    // Écouteur pour fermer le formulaire d'ajout de projet
-    closeModalBtn.addEventListener('click', () => {
-      closeAddProjectForm();
-    });
-
-    // Écouteur pour revenir à la galerie
-    backToGalleryBtn.addEventListener('click', () => {
-      console.log('Back to gallery button clicked');
-      backToGallery();
-    });
-    console.log('Open Add Project Form executed');
-  };
+  if (closeModalBtnInForm) {
+    closeModalBtnInForm.removeEventListener('click', closeAddProjectForm);
+    closeModalBtnInForm.addEventListener('click', closeAddProjectForm);
+  }
+  if (backToGalleryBtnInForm) {
+    backToGalleryBtnInForm.removeEventListener('click', backToGallery);
+    backToGalleryBtnInForm.addEventListener('click', backToGallery);
+  }
+};
 
 // Fonction pour revenir à la galerie
 const backToGallery = () => {
   const galleryContainer = document.getElementById('gallery-container');
-  const addProjectFormContainer = document.getElementById('add-project-form-container');
+  const galleryTitle = document.querySelector('#modal-content > h2');
 
-  if (!galleryContainer || !addProjectFormContainer) {
-    console.error('One or more elements not found');
-    return;
+  if (galleryContainer) {
+    galleryContainer.style.display = 'grid';
   }
-
-  galleryContainer.style.display = 'block';
-  addProjectFormContainer.style.display = 'none';
+  if (galleryTitle) {
+    galleryTitle.style.display = 'block';
+  }
+  if (addProjectFormContainer) {
+    addProjectFormContainer.style.display = 'none';
+  }
+  if (addPhotoBtn) {
+    addPhotoBtn.style.display = 'block';
+  }
 };
 
+// Fonction pour fermer le formulaire d'ajout de projet
+const closeAddProjectForm = () => {
+  modalContainer.style.display = 'none';
+  
+  // Réinitialisation des états visuels pour la prochaine ouverture
+  backToGallery();
+};
 
-  // Fonction pour fermer le formulaire d'ajout de projet
-  const closeAddProjectForm = () => {
-    console.log('bonjour');
-    modalContainer.style.display = 'none';
-    console.log('hello');
-    addProjectForm.reset();
-  };
+// Attachement des écouteurs d'événements
+addPhotoBtn.addEventListener('click', openAddProjectForm);
 
-  // Écouteur d'événement pour ouvrir le formulaire d'ajout de projet
-  addPhotoBtn.addEventListener('click', openAddProjectForm);
+// Assurez-vous que les boutons de fermeture et de retour à la galerie dans la modale sont correctement gérés
+document.addEventListener('DOMContentLoaded', () => {
+  const closeModalBtn = document.getElementById('close-modal');
+  if (closeModalBtn) {
+    closeModalBtn.addEventListener('click', closeAddProjectForm);
+  }
+
+  // Si vous avez un bouton spécifique pour revenir à la galerie dans votre formulaire d'ajout, assurez-vous qu'il est correctement géré ici
+  const backToGalleryBtn = document.getElementById('back-to-gallery');
+  if (backToGalleryBtn) {
+    backToGalleryBtn.addEventListener('click', backToGallery);
+  }
+});
 
   // Initialisation d'un ensemble pour les catégories et vérification de l'authentification admin
   const categorySet = new Set();
@@ -301,4 +283,3 @@ const backToGallery = () => {
       closeModal();
     }
   });
-});
