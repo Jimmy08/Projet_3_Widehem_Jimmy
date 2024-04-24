@@ -146,10 +146,10 @@ const openAddProjectForm = () => {
 
   modalContainer.style.display = 'block';
 
-  // Réattachez les écouteurs d'événements pour la prévisualisation d'image
+  // Réattacher les écouteurs d'événements pour la prévisualisation d'image
   attachImageUploadListener();
 
-  // Réattachez les écouteurs d'événements aux boutons dans la modale d'ajout de projet
+  // Réattacher les écouteurs d'événements aux boutons dans la modale d'ajout de projet
   const closeModalBtnInForm = document.getElementById('add-project-form-container').querySelector('#close-modal');
   const backToGalleryBtnInForm = document.getElementById('add-project-form-container').querySelector('#back-to-gallery');
 
@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
     // Logique pour attacher l'écouteur d'événement au formulaire d'ajout de projet
-    const addProjectForm = document.getElementById('add-project-form'); // Assurez-vous que c'est le bon ID.
+    const addProjectForm = document.getElementById('add-project-form'); 
     if (addProjectForm) {
       addProjectForm.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -221,13 +221,12 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error('Formulaire d\'ajout de projet introuvable!');
     }
 
-  // Si vous avez un bouton spécifique pour revenir à la galerie dans votre formulaire d'ajout, assurez-vous qu'il est correctement géré ici
   const backToGalleryBtn = document.getElementById('back-to-gallery');
   if (backToGalleryBtn) {
     backToGalleryBtn.addEventListener('click', backToGallery);
   }
 
-    // Réattachez l'écouteur d'événements pour la prévisualisation d'image
+    // Réattacher l'écouteur d'événements pour la prévisualisation d'image
     attachImageUploadListener();
 
     // Écouteur d'événements pour ouvrir le sélecteur de fichier quand on clique sur la prévisualisation
@@ -237,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (imagePreview) {
       imagePreview.addEventListener('click', () => {
         if (imageInput) {
-          imageInput.click(); // Déclenche le clic sur l'input de type file
+          imageInput.click();
         }
       });
     }
